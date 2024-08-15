@@ -1,0 +1,6 @@
+# Instalación de EsLint
+npm init @eslint/config@latest
+
+# Instalación de dependencias de desarrollo
+npm i --dev eslint-plugin-jest
+npm i --dev eslint-plugin-prettier
