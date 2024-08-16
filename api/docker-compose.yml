@@ -1,0 +1,10 @@
+version: "3.3"
+
+services:
+  mongo-testing:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root123
+    ports:
+      - 27018:27017
