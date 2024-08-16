@@ -8,6 +8,7 @@
     "start:dev": "DEBUG=app:* nodemon src/index.js",
     "start:prod": "NODE_ENV=production node src/index.js",
     "test": "jest",
+    "test:e2e": "jest --config ./src/e2e/jest-e2e.json --forceExit",
     "lint": "eslint src/**",
     "lint:fix": "eslint src/** --fix"
   },
@@ -18,7 +19,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "mongodb": "^4.4.1"
+    "mongodb": "^4.4.1",
+    "supertest": "^7.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
