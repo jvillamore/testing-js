@@ -1,43 +1,56 @@
-const request = require("supertest");
-const { generateManyBooks } = require("../../src/fakes/book.fake");
+const request = require('supertest');
+const createApp = require('../../src/app');
+const { MongoClient } = require('mongodb');
+const { config } = require('../config');
 
-// Mock para la función GetAll.
-const mockGetAll = jest.fn();
+const DB_NAME = config.dbName;
+const MONGO_URI = config.dbUrl;
+let app = null;
+let server = null;
+let database = null;
+let client = null;
 
-jest.mock("../../src/lib/mongo.lib", () =>
-  jest.fn().mockImplementation(() => ({
-    getAll: mockGetAll,
-    create: () => {},
-  }))
-);
-const createApp = require("../../src/app");
-
-describe("Test for hello endpoint", () => {
-  let app = null;
-  let server = null;
-  beforeAll(() => {
+describe('Test for hello endpoint', () => {
+  beforeAll(async () => {
     app = createApp();
-    server = app.listen(3001);
+    server = app.listen(3000);
+    client = await new MongoClient(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    await client.connect();
+    database = client.db(DB_NAME);
   });
   afterAll(async () => {
+    await database.dropDatabase();
+    await client.close(true);
     await server.close();
-    // Limpia los casos de prueba.
-    jest.clearAllMocks();
   });
 
   // Describe el caso de prueba
-  describe("Test for GET /api/v1/books", () => {
-    test("test 001", () => {
+  describe('Test for GET /api/v1/books', () => {
+    test('test 001', async () => {
       // Arrange
-      const fakeBooks = generateManyBooks(2);
-      mockGetAll.mockResolvedValue(fakeBooks);
+      const seedData = await database.collection('books').insertMany([
+        {
+          name: 'Algo',
+          year: 1800,
+          author: 'coinc',
+        },
+        {
+          name: 'Algo 2',
+          year: 1820,
+          author: 'comic con',
+        },
+      ]);
       // Act
       return request(app)
-        .get("/api/v1/books")
+        .get('/api/v1/books')
         .expect(200)
         .then(({ body }) => {
           // Assert
-          expect(body.length).toEqual(fakeBooks.length);
+          console.log(body);
+          expect(body.length).toEqual(seedData.insertedCount);
         });
     });
   });

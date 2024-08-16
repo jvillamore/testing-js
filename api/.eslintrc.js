@@ -6,9 +6,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  // extends: [
-  //   'airbnb-base',
-  // ],
+  extends: ["eslint:recommended", "plugin:prettier/recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
   parserOptions: {
     ecmaVersion: "latest",
   },
