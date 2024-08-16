@@ -6,9 +6,10 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: ["eslint:recommended", "plugin:prettier/recommended", "plugin:@typescript-eslint/eslint-recommended", "plugin:@typescript-eslint/recommended"],
+  plugins: ['@typescript-eslint/eslint-plugin'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:@typescript-eslint/eslint-recommended', 'plugin:@typescript-eslint/recommended'],
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 'latest',
   },
   rules: {},
 };
